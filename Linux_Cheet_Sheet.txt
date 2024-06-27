@@ -1,0 +1,520 @@
+2024-05-08 Linux course on Coursera
+
+Module 2 Cheat Sheet - Introduction to Linux Commands
+
+Getting information
+
+Return your user name:
+whoami
+
+Return your user and group id:
+id
+
+Return operating system name, username, and other info:
+uname -a
+
+Display reference manual for a command:
+man top
+
+List available man pages, including a brief description for each command:
+man -k .
+
+Get help on any command (for eg: curl):
+curl --help
+This provides a brief overview of the curl command's usage and options.
+
+Return the current date and time:
+date
+
+Navigating and working with directories
+List files and directories by date, newest to last:
+ls -lrt
+
+Find files in directory tree that end in .sh:
+find -name \'\*.sh\'
+
+Return path to present working directory:
+pwd
+
+Make a new directory:
+mkdir new_folder
+
+Change the current directory:
+Up one level:
+cd ../
+
+To home:
+cd ~` or `cd
+To some other directory: cd path_to_directory
+
+Remove directory verbosely:
+rmdir temp_directory -v
+
+Monitoring system performance and status
+List selection of/all running processes and their PIDs:
+ps
+ps -e
+
+Display resource usage:
+top
+
+List mounted file systems and usage:
+df
+
+Creating, copying, moving, and deleting files:
+Create an empty file or update existing file's timestamp:
+touch a_new_file.txt
+
+Copy a file:
+cp file.txt new_path/new_name.txt
+
+Change file name or path:
+mv this_file.txt that_path/that_file.txt
+
+Remove a file verbosely:
+rm this_old_file.txt -v
+
+Working with file permissions
+Change/modify file permissions to 'execute' for all users:
+chmod  +x  my_script.sh
+
+Change/modify file permissions to 'execute' only for you, the current user:
+chmod u+x my_file.txt
+
+Remove 'read' permissions from group and other users:
+chmod go-r
+
+Displaying file and string contents
+Display file contents:
+cat my_shell_script.sh
+
+Display file contents page-by-page:
+more ReadMe.txt
+
+Display first 10 lines of file:
+head -10 data_table.csv
+
+Display last 10 lines of file:
+tail -10 data_table.csv
+
+Display string or variable value:
+echo "I am not a robot"  
+echo "I am $USERNAME"
+
+Basic text wrangling
+Sorting lines and dropping duplicates:
+Sort and display lines of file alphanumerically:
+sort text_file.txt
+
+In reverse order:
+sort -r text_file.txt
+
+Drop consecutive duplicated lines and display result:
+uniq list_with_duplicated_lines.txt
+
+Displaying basic stats:
+Display the count of lines, words, or characters in a file:
+Lines:
+wc  -l table_of_data.csv
+
+Words:
+wc  -w my_essay.txt
+
+Characters:
+wc  -m some_document.txt
+
+Extracting lines of text containing a pattern:
+Some frequently used options for grep:
+Option	Description
+-n	Print line numbers along with matching lines
+-c	Get the count of matching lines
+-i	Ignore the case of the text while matching
+-v	Print all lines which do not contain the pattern
+-w	Match only if the pattern matches whole words
+
+Extract lines containing the word "hello", case insensitive and whole words only:
+grep  -iw hello  a_bunch_of_hellos.txt
+
+Extract lines containing the pattern "hello" from all files in the current directory ending in .txt:
+grep  -l hello  *.txt
+
+Merge two or more files line-by-line, aligned as columns:
+Suppose you have three files containing the first and last names of your customers, plus their phone numbers.
+Use paste to align file contents into a Tab-delimited table, one row for each customer:
+paste first_name.txt last_name.text phone_number.txt
+
+Use a comma as a delimiter instead of the default Tab delimiter:
+paste -d "," first_name.txt last_name.text phone_number.txt
+
+Use the cut command to extract a column from a table-like file:
+Suppose you have a text file whos rows consist of first and last names of customers, delimited by a comma.
+Extract first names, line-by-line:
+cut -d "," -f 1 names.csv
+
+Extract the second to fifth characters (bytes) from each line of a file:
+cut -b 2-5 my_text_file.txt
+
+Extract the characters (bytes) from each line of a file, starting from the 10th byte to the end of the line:
+cut -b 10- my_text_file.txt
+
+Compression and archiving
+Archive a set of files:
+tar -cvf my_archive.tar.gz file1 file2 file3
+Compress a set of files:
+zip my_zipped_files.zip file1 file2   
+zip my_zipped_folders.zip directory1 directory2
+
+Extract files from a compressed zip archive:
+unzip my_zipped_file.zip 
+unzip my_zipped_file.zip -d extract_to_this_direcory
+
+Working with networking commands
+Print hostname:
+hostname 
+
+Send packets to URL and print response:
+ping  www.google.com
+
+Display or configure system network interfaces:
+ifconfig   
+ip 
+
+Display contents of file at a URL:
+curl  <url>
+
+Download file from a URL:
+wget  <url>
+
+
+# -----------------------------------------------------------------
+
+Module 3 Cheat Sheet - Introduction to Shell Scripting
+
+Bash shebang
+#!/bin/bash
+
+Get the path to a command
+which bash
+
+#-----
+Pipes, filters, and chaining
+Chain filter commands together using the pipe operator:
+ls | sort -r
+
+Pipe the output of manual page for ls to head to display the first 20 lines:
+man ls | head -20
+
+Use a pipeline to extract a column of names from a csv and drop duplicate names:
+cut -d "," -f1 names.csv | sort | uniq
+
+#-----
+Working with shell and environment variables:
+List all shell variables:
+set
+
+Define a shell variable called my_planet and assign value Earth to it:
+my_planet=Earth
+
+Display value of a shell variable:
+echo $my_planet
+
+Reading user input into a shell variable at the command line:
+read first_name
+
+Tip: Whatever text string you enter after running this command gets stored as the value of the variable first_name.
+
+List all environment variables:
+env
+
+Environment vars: define/extend variable scope to child processes:
+export my_planet
+export my_galaxy='Milky Way'
+
+#-----
+Metacharacters
+Comments #:
+# The shell will not respond to this message
+
+Command separator ;:
+echo 'here are some files and folders'; ls
+
+File name expansion wildcard *:
+ls *.json
+
+Single character wildcard ?:
+ls file_2021-06-??.json
+
+#-----
+Quoting
+Single quotes '' - interpret literally:
+echo 'My home directory can be accessed by entering: echo $HOME'
+
+Double quotes "" - interpret literally, but evaluate metacharacters:
+echo "My home directory is $HOME"
+
+Backslash \ - escape metacharacter interpretation:
+echo "This dollar sign should render: \$"
+
+#-----
+I/O Redirection
+Redirect output to file and overwrite any existing content:
+echo 'Write this text to file x' > x
+
+Append output to file:
+echo 'Add this line to file x' >> x
+
+Redirect standard error to file:
+bad_command_1 2> error.log
+
+Append standard error to file:
+bad_command_2 2>> error.log
+
+Redirect file contents to standard input:
+$ tr “[a-z]” “[A-Z]” < a_text_file.txt
+
+The input redirection above is equivalent to:
+$cat a_text_file.txt | tr “[a-z]” “[A-Z]”
+
+#-----
+Command Substitution
+Capture output of a command and echo its value:
+THE_PRESENT=$(date)
+echo "There is no time like $THE_PRESENT"
+
+Capture output of a command and echo its value:
+echo "There is no time like $(date)"
+
+#-----
+Command line arguments
+./My_Bash_Script.sh arg1 arg2 arg3
+
+#-----
+Batch vs. concurrent modes
+Run commands sequentially:
+start=$(date); ./MyBigScript.sh ; end=$(date)
+
+Run commands in parallel:
+./ETL_chunk_one_on_these_nodes.sh  & ./ETL_chunk_two_on_those_nodes.sh
+
+#-----
+Scheduling jobs with cron
+Open crontab editor:
+crontab -e
+
+Job scheduling syntax:
+m  h  dom  mon  dow   command
+
+(minute, hour, day of month, month, day of week)
+
+Tip: You can use the * wildcard to mean "any".
+
+Append the date/time to a file every Sunday at 6:15 pm:
+15 18 * * 0 date >> sundays.txt
+
+Run a shell script on the first minute of the first day of each month:
+1  0 1 * * ./My_Shell_Script.sh
+
+Back up your home directory every Monday at 3:00 am:
+0 3 * * 1  tar -cvf my_backup_path\my_archive.tar.gz $HOME\
+
+Deploy your cron job:
+Close the crontab editor and save the file.
+
+List all cron jobs:
+crontab -l
+
+#-----
+Conditionals
+if-then-else syntax:
+
+if [[ $# == 2 ]]
+then
+  echo "number of arguments is equal to 2"
+else
+  echo "number of arguments is not equal to 2"
+fi
+
+'and' operator &&:
+if [ condition1 ] && [ condition2 ]
+
+'or' operator ||:
+if [ condition1 ] || [ condition2 ]
+
+#-----
+Logical operators
+Operator	Definition
+==	is equal to
+!=	is not equal to
+<	is less than
+>	is greater than
+<=	is less than or equal to
+>=	is greater than or equal to
+
+#-----
+Arithmetic calculations
+Integer arithmetic notation:
+$(())
+
+Basic arithmetic operators:
+Symbol	Operation
++	addition
+-	subtraction
+*	multiplication
+/	division
+
+Display the result of adding 3 and 2:
+echo $((3+2))
+
+Negate a number:
+echo $((-1*-2))
+
+#-----
+Arrays
+Declare an array that contains items 1, 2, "three", "four", and 5:
+my_array=(1 2 "three" "four" 5)
+
+Add an item to your array:
+my_array+="six"
+my_array+=7
+
+Declare an array and load it with lines of text from a file:
+my_array=($(echo $(cat column.txt)))
+
+#-----
+for loops
+Use a for loop to iterate over values from 1 to 5:
+
+for i in {0..5}; do
+    echo "this is iteration number $i"
+done
+
+Use a for loop to print all items in an array:
+
+for item in ${my_array[@]}; do
+  echo $item
+done
+
+Use array indexing within a for loop, assuming the array has seven elements:
+
+for i in {0..6}; do
+    echo ${my_array[$i]}
+done
+
+
+
+
+
+#-----------------------------------------------------------------
+Script for weather temperature extraction
+#-----------------------------------------------------------------
+
+#! /bin/bash
+
+# create a datestamped filename for the raw wttr data:
+today=$(date +%Y%m%d)
+weather_report=raw_data_$today
+
+# download today's weather report from wttr.in:
+city=Casablanca
+curl wttr.in/$city --output $weather_report
+
+# use command substitution to store the current day, month, and year in corresponding shell variables:
+hour=$(TZ='Morocco/Casablanca' date -u +%H) 
+day=$(TZ='Morocco/Casablanca' date -u +%d) 
+month=$(TZ='Morocco/Casablanca' date +%m)
+year=$(TZ='Morocco/Casablanca' date +%Y)
+
+# extract all lines containing temperatures from the weather report and write to file
+grep °C $weather_report > temperatures.txt
+
+# extract the current temperature 
+obs_tmp=$(head -1 temperatures.txt | tr -s " " | xargs | rev | cut -d " " -f2 | rev)
+
+# extract the forecast for noon tomorrow
+fc_temp=$(head -3 temperatures.txt | tail -1 | tr -s " " | xargs | cut -d "C" -f2 | rev | cut -d " " -f2 |rev)
+
+# create a tab-delimited record
+# recall the header was created as follows:
+# header=$(echo -e "year\tmonth\tday\thour_UTC\tobs_tmp\tfc_temp")
+# echo $header>rx_poc.log
+
+record=$(echo -e "$year\t$month\t$day\t$obs_tmp\t$fc_temp")
+# append the record to rx_poc.log
+echo $record>>rx_poc.log
+
+
+#------------------------------------------------------------------------
+
+
+Cumulative Cheat Sheet
+Hands-On Introduction to Linux Commands and Shell Scripting
+
+Informational, Navigational, & Management Commands
+Command	Syntax	Description	Example
+Who Am I	whoami	Return username	whoami
+User ID	id	Return current user or group ID	id
+System Information	uname [OPTIONS]	Display system information	uname -a
+Manual Pages	man [COMMAND]	Display manual page for a command	man ls
+Curl	curl [OPTIONS] [URL]	Transfer data from or to server	curl https://some_website.com
+Date	date [OPTIONS]	Display current date and time	date
+Find	find [DIRECTORY] [OPTIONS]	Find files and directories at specified path	find /home/user -name '*.txt'
+Make Directory	mkdir [DIRECTORY]	Create new directory	mkdir myfolder
+Remove Directory	rmdir [DIRECTORY]	Remove empty directory	rmdir myfolder
+Process Status	ps [OPTIONS]	Display process status information	ps -ef
+Table of Processes	top	Display live system resource usage	top
+Disk Usage	df [OPTIONS] [FILESYSTEM]	Display disk space usage	df -h
+Create Empty File	touch [FILE]	Create new file or update timestamp	touch myfile.txt
+Copy	cp [OPTIONS] [SOURCE] [DESTINATION]	Copy files or directories from source to destination	cp myfile.txt /home/user/documents
+Move	mv [OPTIONS] [SOURCE] [DESTINATION]	Move or rename files and directories	mv myfile.txt /home/user/documents
+Remove	rm [OPTIONS] [FILE/DIRECTORY]	Remove files	rm my_scratch_file.txt
+Remove nonempty directory	rm -r path_to_temp_directory
+rmdir [OPTIONS] [DIRECTORY]	Remove empty directory	rmdir path_to_my_directory
+Change Mode	chmod [OPTIONS] [MODE] [FILE]	Change file or directory permissions	chmod u+x myfile.txt
+Working with Text Files, Networking & Archiving Commands
+Command	Syntax	Description	Example
+Concatenate	cat [FILE]	Display the contents of a file	cat myfile.txt
+Concatentate and display contents of multiple files	cat file1 file2
+More	more [FILE]	Display file one screen at a time	more myfile.txt
+Head	head [OPTIONS] [FILE]	Display first N lines of file	head -5 myfile.txt
+Tail	tail [OPTIONS] [FILE]	Display last N lines of file	tail -5 myfile.txt
+Echo	echo [ARGUMENTS]	Display arguments in console	echo Hello, World!
+Sort	sort [OPTIONS] [FILE]	Alphanumerically sort file contents	sort file.txt
+Unique	uniq [OPTIONS] [FILE]	Report or remove consecutively repeated lines in file	uniq file.txt
+Word Count	wc [OPTIONS] [FILE]	Print the number of lines, words, and characters in a file	wc file.txt
+Grep	grep [OPTIONS] PATTERN [FILE]	Search for a specified pattern in a file	grep "hello" file.txt
+Paste	paste [OPTIONS] [FILE1] [FILE2]	Merge lines of files side by side	paste file1.txt file2.txt
+Cut	cut [OPTIONS] [FILE]	Remove sections from each line of a file	cut -d":" -f1 /etc/passwd
+Tar	tar [OPTIONS] [FILE]	Archive files together into a single file	tar -czvf archive.tar.gz /directory
+Zip	zip [OPTIONS] [FILE]	Compress files into a zip archive	zip archive.zip file1.txt file2.txt
+Unzip	unzip [OPTIONS] [FILE]	Uncompress files from a zip archive	unzip archive.zip
+Hostname	hostname	Print the name of the current host system	hostname
+Ping	ping [OPTIONS] HOSTNAME/IP	Send ICMP ECHO_REQUEST packets to a network host	ping google.com
+Ifconfig	ifconfig [INTERFACE]	Display or configure network interface parameters	ifconfig
+IP	ip [OPTIONS]	Show or manipulate routing, devices, policy routing, and tunnels	ip addr
+Curl	curl [OPTIONS] URL	Transfer data from or to a server	curl https://some_website.com
+Wget	wget [OPTIONS] URL	Download files from the web	wget https://some_website.com/some_file.txt
+Introduction to Shell Scripting
+Command	Syntax	Description	Example
+Shebang	#!/bin/[shell]	First line of shell script	#!/bin/bash
+Pipe	filter1 | filter2	Chain any number of filters	ls | sort -r
+Locate executable	which [EXECUTABLE]	Display location of bash executable	which bash
+Bash	bash [SCRIPT]	Interpret and run script using Bash shell	bash script.txt
+Set	set [OPTION]	List all shell variables	set
+Define variable	[VARIABLE_NAME]=[VALUE]	Define shell variable by name and assign value	name="John"
+Read	read [VARIABLE]	Read from standard input and store result in variable	read name
+Env	env	Print all environment variables and their values	env
+Export	export [VARIABLE]	Extend scope of local variable to all child processes	export name
+Crontab	crontab [OPTIONS]	Open crontab default editor	crontab -e
+List all cron jobs	crontab -l
+Schedule tasks to run at specified times using cron daemon	m h dom mon dow command	Append date/time to file every Sunday at 6:15 pm	15 18 * * 0 date >> sundays.txt
+Back up home directory every Monday at 3:00 am	0 3 * * 1 tar -cvf my_backup_path\my_archive.tar.gz $HOME\
+Run shell script first minute of first day of each month	1 0 1 * * ./My_Script.sh 
+Authors
+Jeff Grossman
+Sam Propupchuk
+
+Other Contributors
+Rav Ahuja
+
+
+
